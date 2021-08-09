@@ -1,0 +1,19 @@
+[package]
+name = "randomness-oracle-program"
+version = "0.1.0"
+edition = "2018"
+
+[features]
+no-entrypoint = []
+test-bpf = []
+
+[dependencies]
+solana-program = "~1.6.20"
+borsh = "0.9.1"
+
+[dev-dependencies]
+solana-sdk = "~1.6.20"
+solana-program-test = "~1.6.20"
+
+[lib]
+crate-type = ["cdylib", "lib"]
