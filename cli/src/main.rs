@@ -56,6 +56,7 @@ fn command_init_randomness_oracle(config: &Config, keypair: Option<Keypair>) -> 
     let keypair = keypair.unwrap_or_else(Keypair::new);
 
     println!("Creating account {}", keypair.pubkey());
+    println!("Authority: {}", &config.owner.pubkey());
 
     let account_balance = config
         .rpc_client
@@ -196,7 +197,9 @@ fn main() {
 
         let owner = signer_from_path(
             &matches,
-            &cli_config.keypair_path,
+            matches
+                .value_of("owner")
+                .unwrap_or(&cli_config.keypair_path),
             "owner",
             &mut wallet_manager,
         )

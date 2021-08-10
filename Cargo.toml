@@ -2,5 +2,6 @@
 members = [
   "program",
   "cli",
-  "broadcaster"
+  "broadcaster",
+  "examples/eggs",
 ]

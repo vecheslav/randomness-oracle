@@ -8,5 +8,16 @@ pub mod entrypoint;
 
 // Export current sdk types for downstream users building with a different sdk version.
 pub use solana_program;
+use solana_program::{
+    account_info::AccountInfo, clock::Slot, program_error::ProgramError, program_pack::Pack,
+};
+use state::RandomnessOracle;
 
 solana_program::declare_id!("FfYvEMJip3kLpSJKfyLRXhp8f8yuSSaLxtjzaFecLT9s");
+
+pub fn read_value(randomness_oracle_info: &AccountInfo) -> Result<([u8; 32], Slot), ProgramError> {
+    let RandomnessOracle { value, slot, .. } =
+        RandomnessOracle::unpack(&randomness_oracle_info.data.borrow())?;
+
+    Ok((value, slot))
+}
