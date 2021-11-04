@@ -97,9 +97,7 @@ async fn main() -> anyhow::Result<()> {
                 Keypair::from_bytes(&config.authority.to_bytes()[..]).unwrap(),
             );
 
-            // Subcribe
-            let websocket_url = solana_cli_config::Config::compute_websocket_url(&config.rpc_url);
-            let subscriber = Subscriber::new(websocket_url);
+            let subscriber = Subscriber::new(config.rpc_url);
             subscriber.run(&broadcaster).await?;
         }
         _ => unreachable!(),

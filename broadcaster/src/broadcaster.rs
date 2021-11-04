@@ -9,6 +9,7 @@ use solana_sdk::{
     signer::Signer,
     transaction::Transaction,
 };
+use std::error::Error;
 use tokio::task::JoinHandle;
 
 pub struct Broadcaster {
@@ -21,7 +22,7 @@ impl Broadcaster {
         Self { rpc_url, authority }
     }
 
-    pub async fn broadcast(&self, accounts: Vec<(Pubkey, RandomnessOracle)>) -> Vec<Signature> {
+    pub async fn broadcast(&self, accounts: Vec<(Pubkey, RandomnessOracle)>) -> Result<Vec<Signature>, Box<dyn Error>> {
         let mut signatures = vec![];
         let mut rng = rand::thread_rng();
 
@@ -36,16 +37,16 @@ impl Broadcaster {
                 update_randomness_oracle(&rpc_client, &pubkey, &authority, value)
             });
 
-            let signature = handle
-                .await
-                .unwrap()
-                .map_err(|e| eprintln!("error: {}", e.to_string()))
-                .unwrap();
+            let signature = handle.await.ok();
 
-            signatures.push(signature);
+            if let Some(signature) = signature {
+                signatures.push(signature?);
+            } else {
+                return Err("Error while send tx".into());
+            }
         }
 
-        signatures
+        Ok(signatures)
     }
 }
 
