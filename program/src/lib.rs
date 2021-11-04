@@ -13,7 +13,7 @@ use solana_program::{
 };
 use state::RandomnessOracle;
 
-solana_program::declare_id!("D8tFXx6unjt5yy1nC4Er8RjbjVhF6RAQAHx5EohqKitf");
+solana_program::declare_id!("mrnd3eZc5ctZm9vmG6JRFaU4TinYMeApRRWYPS6dhyW");
 
 pub fn read_value(randomness_oracle_info: &AccountInfo) -> Result<([u8; 32], Slot), ProgramError> {
     let RandomnessOracle { value, slot, .. } =
